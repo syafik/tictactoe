@@ -1,0 +1,40 @@
+<% if @game.waiting_other_player? %>
+  <h3>Waiting other player to join</h3>
+  <br>
+<% end %>
+<% if @game.ready? && @game.user_id == current_user.id %>
+  <%= link_to 'Start', start_game_path(@game) %>
+<% elsif @game.ready? %>
+ <h4>Waiting game owner to start</h4>
+<% end %>
+
+<% @game.players.each do |player| %>
+  <%= player.name %> - <%= player.sign %>
+<% end %>
+<br >
+<br >
+<% if @game.running? && @game.turn_player_id == current_player.id %>
+  Your Turn
+<% elsif @game.running? %>
+  <%= @game.turn_player.name %>'s turn
+<% end %>
+<br >
+<br >
+<% if @game.running?  || @game.ended? %>
+  <%= link_to 'Reset Board', reset_board_game_path(@game) if @game.running? %> 
+  <div id="moveForm"></div>
+  <div id="moveError"></div>
+  <% 0.upto(@game.rowcols - 1) do |row| %>
+    <% 0.upto(@game.rowcols - 1) do |col| %>
+      <%= link_to move_game_path(row: row, col: col), data: { turbo_stream: '' } do %>
+        <div id="<%= row %>_<%= col %>" class="box">
+          <%= @game.board[row][col].zero? ? '' : @game.board[row][col].chr %>
+        </div>
+      <% end %>
+    <% end %>
+    <div style="clear:both"></div>
+  <% end %>
+<% end %>
+<% if @game.ended? %>
+  Winner = <%= @game.winner_player.name %>
+<% end %>

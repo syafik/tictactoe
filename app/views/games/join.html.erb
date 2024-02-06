@@ -1,0 +1,9 @@
+<h3>Join Game and Play With <%= @game.players.first.name %></h3>
+<hr>
+<%= form_for :join, url: play_game_path(@game) do |form| %>
+  <div id="error_container_id"></div>
+  Player Name : <%= form.text_field :name %>
+  <br>
+  <br>
+  <%= submit_tag 'Join' %> | <%= link_to 'Cancel', games_path %>
+<% end %>

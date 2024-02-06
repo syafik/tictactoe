@@ -1,0 +1,25 @@
+
+<% if @valid %>
+  <% 0.upto(@game.rowcols - 1) do |row| %>
+    <% 0.upto(@game.rowcols - 1) do |col| %>
+      <% value = @game.board[row][col] %>
+      <% next if value.positive? %>
+      <%= turbo_stream.update "#{row}_#{col}" do %>
+        <%= render 'box', row: @row, col: @col, value: 0 %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= turbo_stream.update "#{@row}_#{@col}" do %>
+    <%= render 'box', row: @row, col: @col, value: current_player.sign.ord %>
+  <% end %>
+  <%= turbo_stream.update 'moveForm' do %>
+    <%= render 'move_form', game: @game %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.update 'moveError' do %>
+    <%= render 'shared/error_messages', object: @game %>
+  <% end %>
+  <%= turbo_stream.update 'moveForm' do %>
+  <% end %>
+<% end %>

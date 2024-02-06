@@ -1,0 +1,39 @@
+Hi, <%= current_user.email %> | <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+<hr>
+
+<h3>Game lists</h3>
+<%= link_to 'Create a game', new_game_path %>
+<br>
+<br>
+<table>
+  <thead>
+    <tr>
+      <td>No</td>
+      <td>Owner</td>
+      <td>No.of rowcols</td>
+      <td>Status</td>
+      <td>Play at</td>
+      <td>Actions</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @games.each_with_index do |game, index| %>
+      <tr id="<%= dom_id(game) %>">
+        <td><%= index + 1 %></td>
+        <td><%= game.user.email %></td>
+        <td><%= game.rowcols %></td>
+        <td><%= game.status %></td>
+        <td><%= game.created_at %></td>
+        <td>
+          <%= link_to 'Show', game_path(game) %>
+          <% if game.waiting_other_player? && game.user_id != current_user.id %>
+            | <%= link_to 'Join', join_game_path(game) %>
+          <% end %>
+          <% if !game.running? && game.user_id == current_user.id %>
+           | <%= link_to 'Delete', game_path(game), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

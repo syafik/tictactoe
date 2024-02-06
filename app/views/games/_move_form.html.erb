@@ -1,0 +1,7 @@
+<div id="moveForm">
+  <%= form_for :move, url: submit_move_game_path(game) do |form| %>
+    <%= form.hidden_field :row, value: @row %>
+    <%= form.hidden_field :col, value: @col %>
+    <%= submit_tag 'End Turn' %>
+  <% end %>
+</div>
