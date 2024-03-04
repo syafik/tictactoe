@@ -5,7 +5,7 @@ RSpec.describe Player, type: :model do
   let(:game) { create(:game, user: user) }
 
   describe 'validations' do
-    it { should validate_presence_of(:name) }
+    # it { should validate_presence_of(:name) }
   end
 
   describe 'associations' do
@@ -18,11 +18,6 @@ RSpec.describe Player, type: :model do
 
     it 'is valid with valid attributes' do
       expect(player).to be_valid
-    end
-
-    it 'is not valid without a name' do
-      player.name = nil
-      expect(player).not_to be_valid
     end
 
     it 'belongs to a user' do

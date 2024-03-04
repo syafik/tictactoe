@@ -1,4 +1,4 @@
-Hi, <%= current_user.email %> | <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+Hi, <%= current_user.name %> | <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
 <hr>
 
 <h3>Game lists</h3>
@@ -27,7 +27,7 @@ Hi, <%= current_user.email %> | <%= link_to 'Logout', destroy_user_session_path,
         <td>
           <%= link_to 'Show', game_path(game) %>
           <% if game.waiting_other_player? && game.user_id != current_user.id %>
-            | <%= link_to 'Join', join_game_path(game) %>
+            | <%= link_to 'Join', play_game_path(game) %>
           <% end %>
           <% if !game.running? && game.user_id == current_user.id %>
            | <%= link_to 'Delete', game_path(game), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger' %>

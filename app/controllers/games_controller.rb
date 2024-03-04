@@ -29,7 +29,7 @@ class GamesController < ApplicationController
   def play
     @game.with_lock do
       if @game.valid_for_join?(current_user)
-        @game.players.create(join_params.merge(user_id: current_user.id, sign: 'O'))
+        @game.players.create(user_id: current_user.id, sign: 'O')
         @game.ready!
         redirect_to game_path(@game)
       else
@@ -60,6 +60,8 @@ class GamesController < ApplicationController
   end
 
   def reset_board
+    return redirect_to game_path(@game), notice: 'can not reset' unless current_user.owner?(@game)
+
     @game.reset
     redirect_to game_path(@game)
   end
@@ -77,16 +79,16 @@ class GamesController < ApplicationController
   private
 
   def find_game
-    @game = Game.find_by(id: params[:id])
+    @game = Game.includes(players: :user).find_by(id: params[:id])
   end
 
   def game_params
     params.require(:game).permit(:user_id, :rowcols, players_attributes: [:user_id, :name, :sign])
   end
 
-  def join_params
-    params.require(:join).permit(:user_id, :name, :sign)
-  end
+  # def join_params
+  #   params.require(:join).permit(:user_id, :name, :sign)
+  # end
 
   def move_params
     params.require(:move).permit(:row, :col)

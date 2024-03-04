@@ -8,13 +8,13 @@ class Game < ApplicationRecord
 
   accepts_nested_attributes_for :players
 
-  validates :rowcols, :code, presence: true
-  validates_uniqueness_of :code
+  validates :rowcols, presence: true
+  # validates_uniqueness_of :code
   validates_numericality_of :rowcols, greater_than_or_equal_to: 3,
                                       less_than_or_equal_to: 10,
                                       message: 'must be a whole number between 3 and 10'
 
-  before_validation :generate_unique_code
+  # before_validation :generate_unique_code
   after_commit :create_default_board, on: :create
 
   def valid_for_join?(user)

@@ -9,14 +9,14 @@
 <% end %>
 
 <% @game.players.each do |player| %>
-  <%= player.name %> - <%= player.sign %>
+  <%= player.user.name %> - <%= player.sign %>
 <% end %>
 <br >
 <br >
 <% if @game.running? && @game.turn_player_id == current_player.id %>
   Your Turn
 <% elsif @game.running? %>
-  <%= @game.turn_player.name %>'s turn
+  <%= @game.turn_player.user.name %>'s turn
 <% end %>
 <br >
 <br >

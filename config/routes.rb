@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
 
   devise_scope :user do
     get '/users/sign_out' => 'devise/sessions#destroy'
@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :games do
     member do
       get :join
-      post :play
+      get :play
       get :start
       get :move
       post :submit_move
